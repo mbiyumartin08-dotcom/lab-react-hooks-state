@@ -1,38 +1,39 @@
-import React, { useState } from 'react'
-import ProductList from './components/ProductList'
-import DarkModeToggle from './components/DarkModeToggle'
-import Cart from './components/Cart'
+import { useState } from "react";
+import DarkModeToggle from "./components/DarkModeToggle.jsx";
+import ProductList from "./components/ProductList.jsx";
+import Cart from "./components/Cart.jsx";
 
-const App = () => {
-  // TODO: Implement state for dark mode toggle
-
-  // TODO: Implement state for cart management
-
-  // TODO: Implement state for category filtering
+export default function App() {
+  const [darkMode, setDarkMode] = useState(false);
+  const [cart, setCart] = useState([]);
+  const [category, setCategory] = useState("All");
 
   return (
-    <div>
-      <h1>🛒 Shopping App</h1>
-      <p>
-        Welcome! Your task is to implement filtering, cart management, and dark
-        mode.
-      </p>
+    <div className={`App${darkMode ? " dark" : ""}`}>
+      <header className="app-header">
+        <h1>Grocery Shop</h1>
+        <DarkModeToggle
+          darkMode={darkMode}
+          onToggle={() => setDarkMode((previousMode) => !previousMode)}
+        />
+      </header>
 
-      {/* TODO: Render DarkModeToggle and implement dark mode functionality */}
-
-      {/* TODO: Implement category filter dropdown */}
-      <label>Filter by Category: </label>
-      <select>
-        <option value="all">All</option>
+      <label htmlFor="category-filter">Filter by Category: </label>
+      <select
+        id="category-filter"
+        value={category}
+        onChange={(event) => setCategory(event.target.value)}
+      >
+        <option value="All">All</option>
         <option value="Fruits">Fruits</option>
         <option value="Dairy">Dairy</option>
       </select>
 
-      <ProductList />
-
-      {/* TODO: Implement and render Cart component */}
+      <ProductList
+        category={category}
+        onAddToCart={(product) => setCart((items) => [...items, product])}
+      />
+      <Cart cart={cart} />
     </div>
   )
 }
-
-export default App
